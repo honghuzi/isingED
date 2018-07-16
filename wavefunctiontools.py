@@ -10,7 +10,7 @@ import itertools
 import collections
 from functools import reduce
 if sys.version_info[0] < 3:
-    import itertools.izip as zip
+    from itertools import izip as zip
 
 #******************************************************************************
 #Clifford gates
