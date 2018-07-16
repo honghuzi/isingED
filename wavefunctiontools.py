@@ -425,7 +425,7 @@ class NNHamiltonianSparse(NNHamiltonian):
         return output
 
     def aslinearoperator(self, shift=0):
-        shiftmatvec = lambda(vec): self.matvec(vec, shift=shift)
+        shiftmatvec = lambda vec: self.matvec(vec, shift=shift)
         return scipy.sparse.linalg.LinearOperator(self.shape, shiftmatvec)
 
     def eigs(self, k=2, shift="auto"):
