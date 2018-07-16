@@ -1,4 +1,5 @@
 from __future__ import print_function
+import sys
 import numpy as np
 from copy import copy, deepcopy
 import numpy.linalg as npla
@@ -8,6 +9,8 @@ import scipy.sparse.linalg
 import itertools
 import collections
 from functools import reduce
+if sys.version_info[0] < 3:
+    import itertools.izip as zip
 
 #******************************************************************************
 #Clifford gates
@@ -333,7 +336,7 @@ class NNHamiltonianDense(NNHamiltonian):
         super(NNHamiltonianDense, self).__init__(Nx, Ny, leftterms, rightterms, 
                                                  coefs, d=d)
         self.data = np.zeros(self.shape, dtype=np.complex128)
-        for left, right, coef in itertools.izip(leftterms, rightterms, coefs):
+        for left, right, coef in zip(leftterms, rightterms, coefs):
             thesedata = np.zeros(self.shape, dtype=np.complex128)
             for y, x in itertools.product(range(0, Ny), range(0, Nx)):
                 thesedata += self.__maketerm(x, y, left, right) 
@@ -389,7 +392,7 @@ class NNHamiltonianSparse(NNHamiltonian):
                                                   rightterms, coefs, d=d)
                 
         self.chains = []
-        for left, right, coef in itertools.izip(leftterms, rightterms, coefs):
+        for left, right, coef in zip(leftterms, rightterms, coefs):
             for y, x in itertools.product(range(0, Ny), range(0, Nx)):
                 self.chains += self.__maketerm(x, y, left, right, coef) 
 
@@ -737,7 +740,7 @@ def testdensehamiltonianconstruction(N, d=2, thresh=1E-10, Ntimes=1, Nops=1):
         rightops = [random_hermitian(D) for D in itertools.repeat(d, Nops)] 
 
         denseham = 0.0
-        for coef, left, right in itertools.izip(coefs, leftops, rightops):
+        for coef, left, right in zip(coefs, leftops, rightops):
             denseham += nnhamiltonian(N, left, right, coef)
 
         if x:
@@ -838,7 +841,7 @@ def checkhandbuilt(d=2, Ntimes=1, Nops=1):
             denseham = nnhamfactory(N, N, leftops, rightops, coefs, d=d, 
                                     sparse=False)
             explicit = 0.0
-            for coef, left, right in itertools.izip(coefs, leftops, rightops):
+            for coef, left, right in zip(coefs, leftops, rightops):
                 if N==2:
                     explicit += buildtwobytwo(left, right, coef, d=d)
                 elif N==3:
