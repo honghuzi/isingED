@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 from copy import copy, deepcopy
 import numpy.linalg as npla
@@ -72,7 +73,7 @@ class SpinChainWavefunction(object):
         self.N = Nx*Ny
         self.d=2
         if self.wf.size != self.d**self.N:
-            print "wf had wrong size; wf.size, d, N: ", wf.size, d, N 
+            print ("wf had wrong size; wf.size, d, N: ", wf.size, d, N )
     
     def cascadedmeasurement(self, basis, directional=False):
         """Simulates a sequence of measurements at each site of the lattice.
@@ -690,11 +691,11 @@ def nnhamiltonian(N, left, right, coef=1):
 
 def checkfunction(f, thresh, Ntimes):
     err = sum(itertools.repeat(f(), Ntimes))/Ntimes
-    print "err: ", err
+    print ("err: ", err)
     if err < thresh:
-        print "Passed!"
+        print ("Passed!")
     else:
-        print "Failed!"
+        print ("Failed!")
 
 #*****************************************************************************
 #TEST 1
@@ -704,7 +705,7 @@ def testchaintimesvector(N, d=2, thresh=1E-10, Ntimes=1):
     Make sure the dense and sparse versions of chaintimesvector give the
     same answer.
     """
-    print "Sparse vs dense OperatorChains: " 
+    print ("Sparse vs dense OperatorChains: ") 
     def sparsedense():
         chain = [random_complex((D,D)) for D in itertools.repeat(d, N)]
         opchain = OperatorChain(chain)
@@ -714,7 +715,7 @@ def testchaintimesvector(N, d=2, thresh=1E-10, Ntimes=1):
         return frobnorm(dense, sparse)
     checkfunction(sparsedense, thresh, Ntimes)
 
-    print "Dense OperatorChain vs np.array: " 
+    print ("Dense OperatorChain vs np.array: " )
     def densearray():
         chain = [random_complex((D,D)) for D in itertools.repeat(d, N)]
         vec = random_complex((d**N))
@@ -746,13 +747,13 @@ def testdensehamiltonianconstruction(N, d=2, thresh=1E-10, Ntimes=1, Nops=1):
                                     sparse=False)
 
         return frobnorm(denseham, classham.data)
-    print "Nx=1 : "
+    print ("Nx=1 : ")
     checkfunction(lambda : checkdensebuild(x=False), thresh, Ntimes)
 
-    print "Ny=1 :"
+    print ("Ny=1 :")
     checkfunction(lambda : checkdensebuild(x=True), thresh, Ntimes)
 
-    print "Nx vs Ny: "
+    print ("Nx vs Ny: ")
     def checkNxNy():
         coefs = random_complex((Nops))
         leftops = [random_hermitian(D) for D in itertools.repeat(d, Nops)] 
@@ -794,9 +795,9 @@ def checksparsedense(Nx, Ny, d=2, Ntimes=5, Nops=3):
         errmatvec += frobnorm(vecdense, vecsparse)
         erreigvals += frobnorm(evs[:2], evsparse)
 
-    print "err(H): ", errham/Ntimes
-    print "err(H*vec): ", errmatvec/Ntimes
-    print "err(eigvals): ", erreigvals/Ntimes
+    print ("err(H): ", errham/Ntimes)
+    print ("err(H*vec): ", errmatvec/Ntimes)
+    print ("err(eigvals): ", erreigvals/Ntimes)
 
 
 #*****************************************************************************
@@ -856,10 +857,10 @@ def checkhandbuilt(d=2, Ntimes=1, Nops=1):
             erreigvals += frobnorm(evsexp, evs)
 
                                 
-        print "N=", N
-        print "err(H): ", errham
-        print "err(H*vec): ", errmatvec
-        print "err(eigvals): ", erreigvals
+        print ("N=", N)
+        print ("err(H): ", errham)
+        print ("err(H*vec): ", errmatvec)
+        print ("err(eigvals): ", erreigvals)
             
             
 
@@ -894,9 +895,9 @@ def checkIsing(Nx, Ny, Js=(0., 0.5, 1.0, 2.0),
                # print evsparse
                erreigvals += frobnorm(evs[:1], evsparse)
 
-    print "err(H): ", errham/Ntimes
-    print "err(H*vec): ", errmatvec/Ntimes
-    print "err(eigvals): ", erreigvals/Ntimes
+    print ("err(H): ", errham/Ntimes)
+    print ("err(H*vec): ", errmatvec/Ntimes)
+    print ("err(eigvals): ", erreigvals/Ntimes)
 
 def IsingTest(Nx, Ny):
     sparseham = makeisingham(Nx, Ny, 2.0, 0.0, sparse=True)  
@@ -906,11 +907,11 @@ def IsingTest(Nx, Ny):
     else:
         correct = -4.0
 
-    print "err (h=0): ", np.sqrt((correct - evsparse/(Nx*Ny))**2)
+    print ("err (h=0): ", np.sqrt((correct - evsparse/(Nx*Ny))**2))
 
     sparseham = makeisingham(Nx, Ny, 0.0, 2.0, sparse=True)
     evsparse, eVsparse = sparseham.eigs(k=1)
-    print "err (J=0): ", np.sqrt((correct-evsparse/(Nx*Ny))**2)
+    print ("err (J=0): ", np.sqrt((correct-evsparse/(Nx*Ny))**2))
 
 
     
