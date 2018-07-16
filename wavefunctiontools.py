@@ -914,16 +914,3 @@ def IsingTest(Nx, Ny):
     print ("err (J=0): ", np.sqrt((correct-evsparse/(Nx*Ny))**2))
 
 
-    
-        
-
-
-
-            
-        
-
-
-
-
-
-
