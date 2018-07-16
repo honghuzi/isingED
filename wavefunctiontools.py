@@ -7,6 +7,7 @@ from random import random
 import scipy.sparse.linalg
 import itertools
 import collections
+from functools import reduce
 
 #******************************************************************************
 #Clifford gates
